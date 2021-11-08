@@ -66,7 +66,7 @@ namespace BlitzBit {
                         recvByteCount = stream.Read(buffer, 0, 1);
                         recvBuffer.Add(buffer[0]);
 
-                        if (recvByteCount == 0) Crash();
+                        if (recvByteCount == 0) Disconnect();
 
                         if (packetLength == -1) {
 

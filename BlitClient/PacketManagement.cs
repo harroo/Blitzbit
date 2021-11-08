@@ -16,7 +16,7 @@ namespace BlitzBit {
         private Dictionary<int, Action<object>> packetEventsT
             = new Dictionary<int, Action<object>>();
 
-        public Action<int, int, byte[]> onUnknownPacket;
+        public Action<int, byte[]> onUnknownPacket;
 
         public void AddPacket (int packetId, Action<byte[]> method) {
 
@@ -61,7 +61,7 @@ namespace BlitzBit {
 
                 Log("Unknown Packet Id: " + packetId.ToString());
 
-                if (onUnknownPacket != null) onUnknownPacket(senderId, packetId, data);
+                if (onUnknownPacket != null) onUnknownPacket(packetId, data);
             }
         }
     }
