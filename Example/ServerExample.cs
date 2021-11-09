@@ -17,6 +17,8 @@ public static class Program {
         server.onLog = OnServerLog;
         server.onError = OnServerError;
         server.onUnknownPacket = RelayUnknown;
+        server.onClientConnect = OnConnect;
+        server.onClientDisconnect = OnDisconnect;
 
         server.Start(1234);
 
@@ -43,6 +45,17 @@ public static class Program {
     private static void RelayUnknown (int senderId, int packetId, byte[] data) {
 
         server.RelayAll(packetId, data);
+    }
+
+    private static void OnConnect (int clientId) {
+
+        server.RelayExcludeT(1, "new client to be welcomeD :D :: " + clientId.ToString(), clientId);
+        server.RelayToT(1, clientId, "welcome mr client");
+    }
+
+    private static void OnDisconnect (int clientId) {
+
+        server.RelayAllT(1, "a client just left :: " + clientId.ToString());
     }
 
     private static void OnPacketIdZero (int senderId, byte[] data) {

@@ -29,15 +29,21 @@ namespace BlitzBit {
 
         private void HandleClient (TcpClient client) {
 
+            int hashCode = client.GetHashCode();
+
             mutex.WaitOne(); try {
-                sendStreams.Add(client.GetHashCode(), new Queue<byte>());
+                sendStreams.Add(hashCode, new Queue<byte>());
             } finally { mutex.ReleaseMutex(); }
+
+            OnClientConnectEvent(hashCode);
 
             Thread thread = new Thread(()=>ClientSendLoop(client));
             threadCache.Add(thread);
             thread.Start();
 
             ClientRecvLoop(client);
+
+            OnClientDisconnectEvent(hashCode);
         }
 
         private void ClientSendLoop (TcpClient client) {
