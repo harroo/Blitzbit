@@ -5,14 +5,14 @@ The ultimate Networking-Interface for Game-Development and more.
 Made for use with Unity3D, but can be applied in any environment where it's uses are applicable.
 
 # Pros and Cons
-**Cons**
-- *Only works from Blit\* to Blit\**.
-
 **Pros**
 - Reliable, fast and easy to use.
 - Packet-Size-Limit equivalent to the eighth Mersenne prime; 2,147,483,647.
 - Extraordinarily simple and easy to use.
 - Versatile.
+
+**Cons**
+- *Only works from Blit\* to Blit\**.
 
 # Usage: Client example.
 
