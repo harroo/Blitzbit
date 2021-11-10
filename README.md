@@ -57,9 +57,9 @@ client.SendT(packetId, myClass);
 client.SendT(packetId, "Declare or use a string maybe?");
 ```
 
-Note.
-: It is wise to declare the `BlitClient` without connection arguments.
-: Instead one should do the following:
+**Note.**
+It is wise to declare the `BlitClient` without connection arguments.
+Instead one should do the following:
 
 ```cs
 BlitClient client = new BlitClient();
@@ -69,8 +69,7 @@ BlitClient client = new BlitClient();
 client.Connect("localhost", 1234);
 ```
 
-Epilogue.
-: This shall prevent missed packets, should they be received before the Client-Program is able to make the `AddPacket` calls.
+This shall prevent missed packets, should they be received before the Client-Program is able to make the `AddPacket` calls.
 
 # Usage: Server example.
 
@@ -117,9 +116,9 @@ server.RelayExcludeT(packetId, myClass);
 server.RelayToT(packetId, myClass);
 ```
 
-Note.
-: The `BlitServer` is best used in a Client & Server model; Where you have a Game-Client and a Server Software-Package.
-: For simplistic use where a Game-Client can either host, or join, all in one and without requiring a Server, see the `BlitHybrid` class.
+**Note.**
+The `BlitServer` is best used in a Client & Server model; Where you have a Game-Client and a Server Software-Package.
+For simplistic use where a Game-Client can either host, or join, all in one and without requiring a Server, see the `BlitHybrid` class.
 
 # Usage: Hybrid example.
 
