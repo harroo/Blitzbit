@@ -3,6 +3,7 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Collections.Generic;
+using System.Threading;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
@@ -53,16 +54,79 @@ namespace BlitzBit {
 
         private void CoreLoop () {
 
-            while (true) {
+            if (hosting) {
 
-                mutex.WaitOne(); try { ListenToClients(); } finally { mutex.ReleaseMutex(); }
-                mutex.WaitOne(); try { TalkToClients(); } finally { mutex.ReleaseMutex(); }
-                mutex.WaitOne(); try { HandleDisconnections(); } finally { mutex.ReleaseMutex(); }
+                while (true) {
+
+                    actioned = false;
+
+                    mutex.WaitOne(); try { ListenToClients(); } finally { mutex.ReleaseMutex(); }
+                    mutex.WaitOne(); try { TalkToClients(); } finally { mutex.ReleaseMutex(); }
+                    mutex.WaitOne(); try { HandleDisconnections(); } finally { mutex.ReleaseMutex(); }
+
+                    if (!actioned) Thread.Sleep(5);
+                }
+
+            } else {
+
+                byte[] buffer = new byte[1];
+                int recvByteCount = 0, packetLength = -1, packetId = -1;
+                List<byte> recvBuffer = new List<byte>();
+
+                while (true) {
+
+                    actioned = false;
+
+                    mutex.WaitOne(); try {
+
+                        if (client.Available != 0) { actioned = true;
+
+                            recvByteCount = stream.Read(buffer, 0, 1);
+                            recvBuffer.Add(buffer[0]);
+
+                            if (recvByteCount == 0) Disconnect();
+
+                            if (packetLength == -1) {
+
+                                if (recvBuffer.Count == 4) {
+
+                                    packetLength = BitConverter.ToInt32(recvBuffer.ToArray(), 0);
+                                    recvBuffer.Clear();
+                                }
+
+                            } else if (packetId == -1) {
+
+                                if (recvBuffer.Count == 2) {
+
+                                    packetId = BitConverter.ToUInt16(recvBuffer.ToArray(), 0);
+                                    recvBuffer.Clear();
+                                }
+
+                            } else if (recvBuffer.Count == packetLength) {
+
+                                // recvStream.Enqueue(recvBuffer.ToArray());
+                                RelayPacket(packetId, recvBuffer.ToArray());
+                                recvBuffer.Clear();
+                                packetLength = -1;
+                                packetId = -1;
+                            }
+
+                        } else if (sendStream.Count != 0) { actioned = true;
+
+                            buffer[0] = sendStream.Dequeue();
+                            stream.Write(buffer, 0, 1);
+                        }
+
+                    } finally { mutex.ReleaseMutex(); }
+
+                    if (!actioned) Thread.Sleep(5);
+                }
             }
         }
 
         byte[] buffer = new byte[1];
         List<TcpClient> clientsToDrop = new List<TcpClient>();
+        bool actioned = false;
 
         int recvByteCount = 0, packetLength = -1, packetId = -1;
         List<byte> recvBuffer = new List<byte>();
@@ -70,7 +134,7 @@ namespace BlitzBit {
 
             foreach (var client in clients) {
 
-                if (client.Available != 0) {
+                if (client.Available != 0) { actioned = true;
 
                     recvByteCount = client.GetStream().Read(buffer, 0, 1);
                     recvBuffer.Add(buffer[0]);
@@ -111,7 +175,7 @@ namespace BlitzBit {
         List<byte> _recvBuffer = new List<byte>();
         private void TalkToClients () {
 
-            if (sendStream.Count != 0) {
+            if (sendStream.Count != 0) { actioned = true;
 
                 buffer[0] = sendStream.Dequeue();
 
@@ -148,7 +212,7 @@ namespace BlitzBit {
         }
         private void HandleDisconnections () {
 
-            while (clientsToDrop.Count != 0) {
+            while (clientsToDrop.Count != 0) { actioned = true;
 
                 clients.Remove(clientsToDrop[0]);
                 clientsToDrop[0].Close();

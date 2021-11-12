@@ -3,6 +3,7 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Collections.Generic;
+using System.Threading;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
@@ -57,11 +58,15 @@ namespace BlitzBit {
             int recvByteCount = 0, packetLength = -1, packetId = -1;
             List<byte> recvBuffer = new List<byte>();
 
+            bool actioned = false;
+
             while (true) {
+
+                actioned = false;
 
                 mutex.WaitOne(); try {
 
-                    if (client.Available != 0) {
+                    if (client.Available != 0) { actioned = true;
 
                         recvByteCount = stream.Read(buffer, 0, 1);
                         recvBuffer.Add(buffer[0]);
@@ -93,13 +98,15 @@ namespace BlitzBit {
                             packetId = -1;
                         }
 
-                    } else if (sendStream.Count != 0) {
+                    } else if (sendStream.Count != 0) { actioned = true;
 
                         buffer[0] = sendStream.Dequeue();
                         stream.Write(buffer, 0, 1);
                     }
 
                 } finally { mutex.ReleaseMutex(); }
+
+                if (!actioned) Thread.Sleep(5);
             }
         }
     }

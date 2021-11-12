@@ -11,14 +11,6 @@ namespace BlitzBit {
         private Thread coreThread, listenThread;
         private Mutex mutex = new Mutex();
 
-        public BlitHybrid (string address, int port) {
-
-            Start(IPAddress.Parse(address), port);
-        }
-        public BlitHybrid (int port) {
-
-            Start(IPAddress.Any, port);
-        }
         public BlitHybrid () {}
     }
 }

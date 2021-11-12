@@ -10,18 +10,21 @@ namespace BlitzBit {
 
         private TcpListener listener;
 
-        private bool running;
+        public void Host (int port) {
 
-        public void Start (int port) {
-
-            Start(IPAddress.Any, port);
+            Host(IPAddress.Any, port);
         }
 
-        public void Start (IPAddress address, int port) {
+        public void Host (IPAddress address, int port) {
+
+            if (connected) {
+
+                LogError("Cannot Host when Connected!!"); return;
+            }
 
             mutex.WaitOne(); try {
 
-                if (running) return;
+                if (hosting) return;
 
                 listener = new TcpListener(address, port);
                 listener.Start();
@@ -34,18 +37,18 @@ namespace BlitzBit {
 
                 Log("Server Listening on: " + address.ToString() + ":" + port.ToString());
 
-                running = true;
+                hosting = true;
 
             } catch (Exception ex) {
 
                 LogError(ex.Message);
 
-                if (running) {
+                if (hosting) {
 
                     coreThread.Abort();
                     listenThread.Abort();
                 }
-                running = false;
+                hosting = false;
                 try {
 
                     listener.Stop();
@@ -59,14 +62,14 @@ namespace BlitzBit {
 
             mutex.WaitOne(); try {
 
-                if (!running) return;
+                if (!hosting) return;
 
-                if (running) {
+                if (hosting) {
 
                     coreThread.Abort();
                     listenThread.Abort();
                 }
-                running = false;
+                hosting = false;
                 try {
 
                     listener.Stop();
