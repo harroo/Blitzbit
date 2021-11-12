@@ -37,8 +37,14 @@ namespace BlitzBit {
 
             coreThread.Abort();
 
-            stream.Close();
-            client.Close();
+            try {
+
+                stream.Close();
+                client.Close();
+
+            } catch {}
+
+            OnDisconnectEvent();
 
             connected = false;
         }
