@@ -136,10 +136,11 @@ hybrid.AddPacketT(packetId, OnPacketT);
 
 /* Connections / Hosting */
 hybrid.Connect("localhost", 1234);
+// Or.
 hybrid.Host(1234);
 
 /* Sending. */
-// Exactly the same as the BlitClient and the BlitServer.
+// Exactly the same as the BlitClient.
 client.Send(packetId, new byte[4]{1, 2, 3, 4});
 client.SendT(packetId, myClass);
 ```
