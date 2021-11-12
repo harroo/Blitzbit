@@ -1,7 +1,6 @@
 
 #example binaries
-ClientExample.out
-ServerExample.out
+*Example.out
 
 #output dlls
 Blitzbit*.dll
