@@ -122,9 +122,6 @@ For simplistic use where a Game-Client can either host, or join, all in one and 
 
 # Usage: Hybrid example.
 
-This is not yet completed, and is currently still "Under Development".
-However, I can let you in on some sort of idea as to how it'll operate.
-
 ```cs
 /* Declaration. */
 BlitHybrid hybrid = new BlitHybrid();
@@ -143,7 +140,24 @@ hybrid.Host(1234);
 // Exactly the same as the BlitClient.
 client.Send(packetId, new byte[4]{1, 2, 3, 4});
 client.SendT(packetId, myClass);
+
+/* Closing / Disconnecting */
+if (hybrid.hosting) {
+
+    hybrid.Stop();
+
+} else {
+
+    hybrid.Disconnect();
+}
 ```
+
+The `BlitHybrid` is used as both a Client and a Server, all in one.
+It's most useful for Game-Clients that bare simplistic Multiplayer in mind.
+
+# More Examples.
+
+For more Examples, see [Examples/](https://github.com/harroo/Blitzbit/tree/main/Examples)
 
 # Planned Features.
 
