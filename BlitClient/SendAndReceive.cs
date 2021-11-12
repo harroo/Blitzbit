@@ -51,7 +51,7 @@ namespace BlitzBit {
             } finally { mutex.ReleaseMutex(); }
         }
 
-        private void RecvLoop () {
+        private void CoreLoop () {
 
             byte[] buffer = new byte[1];
             int recvByteCount = 0, packetLength = -1, packetId = -1;

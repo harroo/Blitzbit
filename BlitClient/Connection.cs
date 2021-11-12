@@ -23,7 +23,7 @@ namespace BlitzBit {
                 client = new TcpClient(address, port);
                 stream = client.GetStream();
 
-                coreThread = new Thread(()=>RecvLoop());
+                coreThread = new Thread(()=>CoreLoop());
                 coreThread.Start();
 
                 connected = true;
