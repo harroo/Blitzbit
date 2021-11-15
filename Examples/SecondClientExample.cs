@@ -16,20 +16,20 @@ public static class Program {
         //send and recv or setup connection or watever u need todo
         //then pass control over to blitstream
 
-        BlitStream bstream = new BlitStream(client, stream);
+        BlitClient blitClient = new BlitClient(client, stream);
         //or
         //BlitStream bstream = new BlitStream(client);
 
-        bstream.AddPacket(0, OnPacketZero);
-        bstream.AddPacketT(1, OnString);
+        blitClient.AddPacket(0, OnPacketZero);
+        blitClient.AddPacketT(1, OnString);
 
-        bstream.Send(0, new byte[2]{6, 4});
-        bstream.SendT(1, "string");
+        blitClient.Send(0, new byte[2]{6, 4});
+        blitClient.SendT(1, "string");
 
         Console.ReadKey();
 
         //blitstream will take care of the client for us
-        bstream.Close();
+        blitClient.Close();
     }
 
     private static void OnPacketZero (byte[] data) {

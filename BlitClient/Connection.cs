@@ -12,7 +12,26 @@ namespace BlitzBit {
         private TcpClient client;
         private NetworkStream stream;
 
-        private bool connected;
+        public void Consign (TcpClient client, NetworkStream stream) {
+
+            mutex.WaitOne(); try {
+
+                if (connected) return;
+
+                this.client = client;
+                this.stream = stream;
+
+                coreThread = new Thread(()=>CoreLoop());
+                coreThread.Start();
+
+                connected = true;
+
+            } catch (Exception ex) {
+
+                LogError(ex.Message);
+
+            } finally { mutex.ReleaseMutex(); }
+        }
 
         public void Connect (string address, int port) {
 
@@ -60,6 +79,8 @@ namespace BlitzBit {
                 } catch {}
 
             } finally { mutex.ReleaseMutex(); }
+
+            OnDisconnectEvent();
         }
     }
 }
