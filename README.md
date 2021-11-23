@@ -155,6 +155,44 @@ if (hybrid.hosting) {
 The `BlitHybrid` is used as both a Client and a Server, all in one.
 It's most useful for Game-Clients that bare simplistic Multiplayer in mind.
 
+# Usage: Stream example.
+
+```cs
+/* Declaration. */
+BlitStream bstream = new BlitStream(client.GetStream());
+
+/* Sending and Receiving. */
+
+//  Receiving.
+bstream.Recv(MyMethod);
+bstream.RecvT(MyTypeMethod);
+
+// ... //
+public void MyMethod (int senderId, byte[] data) {
+
+    // ... Do something with the Received-Buffer.
+}
+
+// Can receive classes, structs or anything.
+// Even string and int or any other types.
+public void MyTypeMethod (int senderId, object obj) {
+
+    MyClass recvClass = (MyClass)obj;
+    // ... Do something with the received Class-Object.
+}
+
+//  Sending.
+bstream.Send(0, new byte[2]{6, 4});
+bstream.SendT(1, "Text Message!");
+
+/* Closing. */
+bstream.Close();
+```
+
+**Note.**
+The `BlitStream` will require a `TcpClient` to operate, it acts as a `NetworkStream` substitute and implements the BlitStream functionality at a raw level.
+It is to be used in places where advanced and complex usage may be required. 
+
 # More Examples.
 
 For more Examples, see [Examples/](https://github.com/harroo/Blitzbit/tree/main/Examples)

@@ -5,8 +5,6 @@ using System.Net.Sockets;
 
 using BlitzBit;
 
-//this is how its planned to work, and will be implemented at some point
-
 public static class Program {
 
     public static void Main (string[] args) {
