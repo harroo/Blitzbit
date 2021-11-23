@@ -1,10 +1,10 @@
 # Blitzbit
 The ultimate Networking-Interface for Game-Development and more.
 
-# About
+## About
 Made for use with Unity3D, but can be applied in any environment where it's uses are applicable.
 
-# Pros and Cons
+## Pros and Cons
 **Pros**
 - Reliable, fast and easy to use.
 - Packet-Size-Limit equivalent to the eighth Mersenne prime; 2,147,483,647.
@@ -13,6 +13,29 @@ Made for use with Unity3D, but can be applied in any environment where it's uses
 
 **Cons**
 - *Only works from Blit\* to Blit\**.
+
+# How to Install / Setup..
+
+There are three ways setup Blitzbit.
+
+**Download Blitzbit.dll** [Recommended]
+- To download and install Blitzbit this way, simply check the releases on this page, and download the latest `dll`.
+- [Blitzbit Releases](https://github.com/harroo/Blitzbit/releases)
+
+**Compile Blitzbit.dll**
+- Clone this repository and once in the Root-Directory, run `make`.
+- This will require `make` and `mcs`.
+
+**Select specific components** [Recommended]
+- Blitzbit is built in such a way that you can simply copy the folder of the desired component into your project. Since Blitzbit has no dependencies this should work fine.
+- For example if you were to desire only the `BlitClient` for your project, then you could copy said component into your project.
+- This is ideal for use in Unity3D when building for Android, as dll files do not work in Android builds, so importing the code itself will negate this issue.
+
+In all cases the `namespace` for Blitzbit is `BlitzBit`.
+```cs
+using BlitzBit;
+```
+Yes, with a capital 'B' even though the actual project is spelled with a lower-case 'b'.. How odd!
 
 # Usage: Client example.
 
@@ -191,7 +214,7 @@ bstream.Close();
 
 **Note.**
 The `BlitStream` will require a `TcpClient` to operate, it acts as a `NetworkStream` substitute and implements the BlitStream functionality at a raw level.
-It is to be used in places where advanced and complex usage may be required. 
+It is to be used in places where advanced and complex usage may be required.
 
 # More Examples.
 
