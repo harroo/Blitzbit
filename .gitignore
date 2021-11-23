@@ -1,6 +1,6 @@
 
 #example binaries
-*Example.out
+*Example*.out
 
 #output dlls
 Blitzbit*.dll

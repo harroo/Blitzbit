@@ -17,7 +17,9 @@ namespace BlitzBit {
 
                 mutex.WaitOne(); try {
 
-                    Log("Client Accepted: " + client.Client.RemoteEndPoint.ToString());
+                    Log("Client Caught: " + client.Client.RemoteEndPoint.ToString());
+
+                    if (OnClientCatchEvent(client)) continue;
 
                     Thread thread = new Thread(()=>HandleClient(client));
                     threadCache.Add(thread);
@@ -25,6 +27,13 @@ namespace BlitzBit {
 
                 } finally { mutex.ReleaseMutex(); }
             }
+        }
+
+        public void InsertClient (TcpClient client) {
+
+            Thread thread = new Thread(()=>HandleClient(client));
+            threadCache.Add(thread);
+            thread.Start();
         }
 
         private void HandleClient (TcpClient client) {
