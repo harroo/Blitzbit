@@ -216,14 +216,44 @@ bstream.Close();
 The `BlitStream` will require a `TcpClient` to operate, it acts as a `NetworkStream` substitute and implements the BlitStream functionality at a raw level.
 It is to be used in places where advanced and complex usage may be required.
 
+# Usage: Packet example.
+
+```cs
+/* Constructing. */
+BlitPacket packet = new BlitPacket();
+
+packet.Append("string value");
+packet.Append(137); // Integer value.
+packet.Append(137.0f); // Floating-Point value.
+
+packet.AppendT(Anything); // Any object.
+
+byte[] myData = packet.ToArray();
+
+/* Deconstructing. */
+BlitPacket packet = new BlitPacket(myData);
+
+string myText = packet.GetString();
+int myNumber = packet.GetInt32();
+float myFloat = packet.GetSingle();
+
+MyClass anything = (MyClass)packet.GetObject();
+```
+
+**Note.**
+`BlitPacket`s MUST be deconstructed in the exact same order that they were constructed. Else the information may become obfuscated.
+
+The `BlitPacket` can be used to Construct and Deconstruct `byte[]`s for any purpose you see fit, not just for use with Blitzbit.
+
+If you wish to "Re-Read" the information from a packet, you can simply call `BlitPacket.Reset()` and it will move the counter to the start of the buffer, therefore restarting the read out.
+
 # More Examples.
 
 For more Examples, see [Examples/](https://github.com/harroo/Blitzbit/tree/main/Examples)
 
 # Planned Features.
 
-- BlitStream, Simple `NetworkStream` implementation using `Blitzbit` functionality.
-- BlitPacket, Basically `StringBuilder` but for `byte[]`s.
+- Udp Variants.
 
 # Epilogue.
 

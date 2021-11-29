@@ -6,6 +6,7 @@ examples:
 	mcs BlitServer/*.cs Examples/ServerExampleII.cs -out:ServerExampleII.out
 	mcs BlitHybrid/*.cs Examples/HybridExample.cs -out:HybridExample.out
 	mcs BlitStream/*.cs Examples/StreamExample.cs -out:StreamExample.out
+	mcs BlitPacket/*.cs Examples/PacketExample.cs -out:PacketExample.out
 
 dll:
 	mcs -t:library Blit*/*.cs -out:Blitzbit_vX.dll
