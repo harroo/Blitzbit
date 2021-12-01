@@ -9,6 +9,7 @@ examples:
 	mcs BlitPacket/*.cs Examples/PacketExample.cs -out:PacketExample.out
 	mcs UBlitClient/*.cs Examples/UBlitClientExample.cs -out:UBlitClientExample.out
 	mcs UBlitServer/*.cs Examples/UBlitServerExample.cs -out:UBlitServerExample.out
+	mcs UBlitHybrid/*.cs Examples/UBlitHybridExample.cs -out:UBlitHybridExample.out
 
 dll:
 	mcs -t:library Blit*/*.cs -out:Blitzbit_vX.dll
