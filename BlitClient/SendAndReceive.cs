@@ -104,7 +104,7 @@ namespace BlitzBit {
                         stream.Write(buffer, 0, 1);
                     }
 
-                } finally { mutex.ReleaseMutex(); }
+                } catch {} finally { mutex.ReleaseMutex(); }
 
                 if (!actioned) Thread.Sleep(5);
             }

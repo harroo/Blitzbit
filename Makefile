@@ -12,4 +12,4 @@ examples:
 	mcs UBlitHybrid/*.cs Examples/UBlitHybridExample.cs -out:UBlitHybridExample.out
 
 dll:
-	mcs -t:library Blit*/*.cs -out:Blitzbit_vX.dll
+	mcs -t:library Blit*/*.cs UBlit*/*.cs -out:Blitzbit_vX.dll

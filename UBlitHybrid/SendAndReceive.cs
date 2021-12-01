@@ -43,7 +43,7 @@ namespace BlitzBit {
 
             if (hosting) {
 
-                while (true) {
+                while (true) { try {
 
                     actioned = false;
 
@@ -87,11 +87,12 @@ namespace BlitzBit {
                     }
 
                     if (!actioned) Thread.Sleep(5);
-                }
+
+                } catch {} }
 
             } else {
 
-                while (true) {
+                while (true) { try {
 
                     actioned = false;
 
@@ -114,7 +115,8 @@ namespace BlitzBit {
                     }
 
                     if (!actioned) Thread.Sleep(5);
-                }
+
+                } catch {} }
             }
         }
     }

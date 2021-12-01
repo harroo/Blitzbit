@@ -11,7 +11,7 @@ namespace BlitzBit {
 
         private void ListenLoop () {
 
-            while (true) {
+            while (true) { try {
 
                 TcpClient client = listener.AcceptTcpClient();
 
@@ -26,7 +26,8 @@ namespace BlitzBit {
                     thread.Start();
 
                 } finally { mutex.ReleaseMutex(); }
-            }
+
+            } catch {} }
         }
 
         public void InsertClient (TcpClient client) {

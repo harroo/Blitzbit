@@ -60,9 +60,9 @@ namespace BlitzBit {
 
                     actioned = false;
 
-                    mutex.WaitOne(); try { ListenToClients(); } finally { mutex.ReleaseMutex(); }
-                    mutex.WaitOne(); try { TalkToClients(); } finally { mutex.ReleaseMutex(); }
-                    mutex.WaitOne(); try { HandleDisconnections(); } finally { mutex.ReleaseMutex(); }
+                    mutex.WaitOne(); try { ListenToClients(); } catch {} finally { mutex.ReleaseMutex(); }
+                    mutex.WaitOne(); try { TalkToClients(); } catch {} finally { mutex.ReleaseMutex(); }
+                    mutex.WaitOne(); try { HandleDisconnections(); } catch {} finally { mutex.ReleaseMutex(); }
 
                     if (!actioned) Thread.Sleep(5);
                 }
@@ -117,7 +117,7 @@ namespace BlitzBit {
                             stream.Write(buffer, 0, 1);
                         }
 
-                    } finally { mutex.ReleaseMutex(); }
+                    } catch {} finally { mutex.ReleaseMutex(); }
 
                     if (!actioned) Thread.Sleep(5);
                 }

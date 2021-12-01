@@ -39,7 +39,7 @@ namespace BlitzBit {
 
             bool actioned = false;
 
-            while (true) {
+            while (true) { try {
 
                 actioned = false;
 
@@ -62,7 +62,8 @@ namespace BlitzBit {
                 }
 
                 if (!actioned) Thread.Sleep(5);
-            }
+
+            } catch {} }
         }
     }
 }
