@@ -1,5 +1,6 @@
 
 using System;
+using System.Threading;
 using System.Collections.Generic;
 
 namespace BlitzBit {
@@ -25,5 +26,11 @@ namespace BlitzBit {
             sendQueue.Enqueue(data);
 
         } finally { mutex.ReleaseMutex(); } }
+
+        public void AwaitEmptySendQueue () {
+
+            while (QueueHasContents())
+                Thread.Sleep(16);
+        }
     }
 }
