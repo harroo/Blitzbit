@@ -285,11 +285,6 @@ This can be found in `PacketManagement.cs`.
 
 For more Examples, see [Examples/](https://github.com/harroo/Blitzbit/tree/main/Examples)
 
-# Epilogue.
-
-Perhaps some sort of Udp variants will be useful also.
-I shall consider this at some point in the near future, as it is something that I'd like to do.
-
 ---
 
 Spelling and Orthography correction: [Kieralia](https://github.com/kieralia)
