@@ -41,6 +41,15 @@ namespace BlitzBit {
 
         private void RelayPacket (int senderId, int packetId, byte[] data) {
 
+            if (useCallBacks) {
+
+                packetCallQueue.Add(packetId, data);
+                packetCallSenders.Add(packetId, senderId);
+
+            } else RunPacketCall(senderId, packetId, data);
+        }
+        private void RunPacketCall (int senderId, int packetId, byte[] data) {
+
             if (packetEvents.ContainsKey(packetId)) {
 
                 packetEvents[packetId](senderId, data);
@@ -61,6 +70,29 @@ namespace BlitzBit {
 
                 if (onUnknownPacket != null) onUnknownPacket(senderId, packetId, data);
             }
+        }
+
+        public bool useCallBacks = false;
+
+        public Dictionary<int, byte[]> packetCallQueue
+            = new Dictionary<int, byte[]>();
+
+        public Dictionary<int, int> packetCallSenders
+            = new Dictionary<int, int>();
+
+        public void RunCallBacks () {
+
+            mutex.WaitOne(); try {
+
+                foreach (var pair in packetCallQueue) {
+
+                    RunPacketCall(packetCallSenders[pair.Key], pair.Key, pair.Value);
+                }
+
+                packetCallQueue.Clear();
+                packetCallSenders.Clear();
+
+            } finally { mutex.ReleaseMutex(); }
         }
     }
 }

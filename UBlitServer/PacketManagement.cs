@@ -41,6 +41,11 @@ namespace BlitzBit {
 
         private void RelayPacket (byte[] raw) {
 
+            if (useCallBacks) packetCallQueue.Add(raw);
+            else RunPacketCall(raw);
+        }
+        private void RunPacketCall (byte[] raw) {
+
             int packetId = BitConverter.ToUInt16(raw, 0);
             byte[] data = new byte[raw.Length - 2];
             Buffer.BlockCopy(raw, 2, data, 0, data.Length);
@@ -65,6 +70,25 @@ namespace BlitzBit {
 
                 if (onUnknownPacket != null) onUnknownPacket(packetId, data);
             }
+        }
+
+        public bool useCallBacks = false;
+
+        public List<byte[]> packetCallQueue
+            = new List<byte[]>();
+
+        public void RunCallBacks () {
+
+            mutex.WaitOne(); try {
+
+                foreach (var packet in packetCallQueue) {
+
+                    RunPacketCall(packet);
+                }
+
+                packetCallQueue.Clear();
+
+            } finally { mutex.ReleaseMutex(); }
         }
     }
 }

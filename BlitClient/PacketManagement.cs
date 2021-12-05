@@ -1,7 +1,5 @@
 
 using System;
-using System.Net;
-using System.Net.Sockets;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -43,6 +41,11 @@ namespace BlitzBit {
 
         private void RelayPacket (int packetId, byte[] data) {
 
+            if (useCallBacks) packetCallQueue.Add(packetId, data);
+            else RunPacketCall(packetId, data);
+        }
+        private void RunPacketCall (int packetId, byte[] data) {
+
             if (packetEvents.ContainsKey(packetId)) {
 
                 packetEvents[packetId](data);
@@ -63,6 +66,25 @@ namespace BlitzBit {
 
                 if (onUnknownPacket != null) onUnknownPacket(packetId, data);
             }
+        }
+
+        public bool useCallBacks = false;
+
+        public Dictionary<int, byte[]> packetCallQueue
+            = new Dictionary<int, byte[]>();
+
+        public void RunCallBacks () {
+
+            mutex.WaitOne(); try {
+
+                foreach (var pair in packetCallQueue) {
+
+                    RunPacketCall(pair.Key, pair.Value);
+                }
+
+                packetCallQueue.Clear();
+
+            } finally { mutex.ReleaseMutex(); }
         }
     }
 }

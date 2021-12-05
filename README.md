@@ -247,13 +247,43 @@ The `BlitPacket` can be used to Construct and Deconstruct `byte[]`s for any purp
 
 If you wish to "Re-Read" the information from a packet, you can simply call `BlitPacket.Reset()` and it will move the counter to the start of the buffer, therefore restarting the read out.
 
+# Usage: Unity3D
+
+For use with Unity Engine you will need to use Thread-Safe Call-Backs.
+This is relatively easy and can done like so.
+
+```cs
+BlitClient client = new BlitClient();
+
+void Start () {
+
+    client.useCallBacks = true;
+}
+
+void Update () {
+
+    client.RunCallBacks();
+}
+```
+
+This is the same for all `Blit` components.
+
+How it works is that specifying to "Use Call-Backs" means that when packets are received they are queued, instead of processed, and when you `RunCallBacks()` it will process the packets on the thread that calls `RunCallBacks()` method.
+In the case of the Unity Engine this is the main thread.
+
+This is the function that handles Packets when they are received.
+```cs
+private void RelayPacket (int packetId, byte[] data) {
+
+    if (useCallBacks) packetCallQueue.Add(packetId, data);
+    else RunPacketCall(packetId, data);
+}
+```
+This can be found in `PacketManagement.cs`.
+
 # More Examples.
 
 For more Examples, see [Examples/](https://github.com/harroo/Blitzbit/tree/main/Examples)
-
-# Planned Features.
-
-- Udp Variants.
 
 # Epilogue.
 
