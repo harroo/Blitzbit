@@ -23,7 +23,7 @@ There are three ways setup Blitzbit.
 - [Blitzbit Releases](https://github.com/harroo/Blitzbit/releases)
 
 **Compile Blitzbit.dll**
-- Clone this repository and once in the Root-Directory, run `make`.
+- Clone this repository and once in the Root-Directory, run `make dll`.
 - This will require `make` and `mcs`.
 
 **Select specific components** [Recommended]
