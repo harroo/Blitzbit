@@ -129,14 +129,14 @@ public void MyTypeMethod (int senderId, object obj) {
 // Sends message to all connected clients.
 server.RelayAll(packetId, new byte[4]{1, 2, 3, 4});
 // Sends message to all clients excluding the one specified.
-server.RelayExclude(packetId, yourByteArray);
+server.RelayExclude(packetId, yourByteArray, clientIdToExclude);
 // Sends message to a specified client.
-server.RelayTo(packetId, yourByteArray);
+server.RelayTo(packetId, targetClientId, yourByteArray);
 
 // * All "Relay" Functions have object variants. * //
 server.RelayAllT(packetId, myClass);
-server.RelayExcludeT(packetId, myClass);
-server.RelayToT(packetId, myClass);
+server.RelayExcludeT(packetId, myClass, clientIdToExclude);
+server.RelayToT(packetId, targetClientId, myClass);
 ```
 
 **Note.**
