@@ -16,6 +16,12 @@ namespace BlitzBit {
             this.AddArray(data);
         }
 
+        public void Append (byte[] val) {
+
+            this.AddArray(BitConverter.GetBytes(val.Length));
+            this.AddArray(val);
+        }
+
         // public void Append (System.SByte val) { this.AddArray(BitConverter.GetBytes(val)); }
         // public void Append (System.Byte val) { this.AddArray(BitConverter.GetBytes(val)); }
 

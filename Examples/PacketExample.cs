@@ -18,6 +18,7 @@ public static class Program {
         packet.Append("this string value");
         packet.AppendT(new int[]{1, 2, 3, 4});
         packet.Append(32768);
+        packet.Append(new byte[4]{0, 128, 255, 65});
 
         packet.AppendT(new MyClass(4, 5));
 
@@ -50,6 +51,7 @@ public static class Program {
         string message = packet.GetString();
         int[] scores = (int[])packet.GetObject();
         int secretNumber = packet.GetInt32();
+        byte[] myBytes = packet.GetByteArray();
 
         MyClass stuff = (MyClass)packet.GetObject();
 
@@ -59,6 +61,9 @@ public static class Program {
         foreach (var i in scores) Console.Write(i.ToString() + ", ");
         Console.WriteLine();
         Console.WriteLine("read: " + secretNumber.ToString());
+        Console.Write("read: ");
+        foreach (var i in myBytes) Console.Write(i.ToString() + ", ");
+        Console.WriteLine();
         Console.WriteLine("read:.Add(): " + stuff.Add().ToString());
     }
 
