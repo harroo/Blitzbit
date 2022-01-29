@@ -43,8 +43,9 @@ namespace BlitzBit {
 
             if (useCallBacks) {
 
-                packetCallQueue.Add(packetId, data);
-                packetCallSenders.Add(packetId, senderId);
+                packetCallQueue_Sender.Add(senderId);
+                packetCallQueue_Id.Add(packetId);
+                packetCallQueue_Data.Add(data);
 
             } else RunPacketCall(senderId, packetId, data);
         }
@@ -74,23 +75,21 @@ namespace BlitzBit {
 
         public bool useCallBacks = false;
 
-        public Dictionary<int, byte[]> packetCallQueue
-            = new Dictionary<int, byte[]>();
-
-        public Dictionary<int, int> packetCallSenders
-            = new Dictionary<int, int>();
+        public List<int> packetCallQueue_Sender = new List<int>();
+        public List<int> packetCallQueue_Id = new List<int>();
+        public List<byte[]> packetCallQueue_Data = new List<byte[]>();
 
         public void RunCallBacks () {
 
             mutex.WaitOne(); try {
 
-                foreach (var pair in packetCallQueue) {
+                for (int i = 0; i < packetCallQueue_Id.Count; ++i)
+                    RunPacketCall(packetCallQueue_Sender[i],
+                        packetCallQueue_Id[i], packetCallQueue_Data[i]);
 
-                    RunPacketCall(packetCallSenders[pair.Key], pair.Key, pair.Value);
-                }
-
-                packetCallQueue.Clear();
-                packetCallSenders.Clear();
+                packetCallQueue_Sender.Clear();
+                packetCallQueue_Id.Clear();
+                packetCallQueue_Data.Clear();
 
             } finally { mutex.ReleaseMutex(); }
         }
