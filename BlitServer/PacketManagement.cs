@@ -83,13 +83,14 @@ namespace BlitzBit {
 
             mutex.WaitOne(); try {
 
-                for (int i = 0; i < packetCallQueue_Id.Count; ++i)
-                    RunPacketCall(packetCallQueue_Sender[i],
-                        packetCallQueue_Id[i], packetCallQueue_Data[i]);
+                while (packetCallQueue_Id.Count != 0) {
 
-                packetCallQueue_Sender.Clear();
-                packetCallQueue_Id.Clear();
-                packetCallQueue_Data.Clear();
+                    RunPacketCall(packetCallQueue_Sender[0], packetCallQueue_Id[0], packetCallQueue_Data[0]);
+
+                    packetCallQueue_Sender.RemoveAt(0);
+                    packetCallQueue_Id.RemoveAt(0);
+                    packetCallQueue_Data.RemoveAt(0);
+                }
 
             } finally { mutex.ReleaseMutex(); }
         }

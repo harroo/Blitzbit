@@ -81,12 +81,12 @@ namespace BlitzBit {
 
             mutex.WaitOne(); try {
 
-                foreach (var packet in packetCallQueue) {
+                while (packetCallQueue.Count != 0) {
 
-                    RunPacketCall(packet);
+                    RunPacketCall(packetCallQueue[0]);
+
+                    packetCallQueue.RemoveAt(0);
                 }
-
-                packetCallQueue.Clear();
 
             } finally { mutex.ReleaseMutex(); }
         }

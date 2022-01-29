@@ -46,7 +46,7 @@ namespace BlitzBit {
                 packetCallQueue_Id.Add(packetId);
                 packetCallQueue_Data.Add(data);
 
-            } else RunPacketCall(packetId, data); 
+            } else RunPacketCall(packetId, data);
         }
         private void RunPacketCall (int packetId, byte[] data) {
 
@@ -81,11 +81,13 @@ namespace BlitzBit {
 
             mutex.WaitOne(); try {
 
-                for (int i = 0; i < packetCallQueue_Id.Count; ++i)
-                    RunPacketCall(packetCallQueue_Id[i], packetCallQueue_Data[i]);
+                while (packetCallQueue_Id.Count != 0) {
 
-                packetCallQueue_Id.Clear();
-                packetCallQueue_Data.Clear();
+                    RunPacketCall(packetCallQueue_Id[0], packetCallQueue_Data[0]);
+
+                    packetCallQueue_Id.RemoveAt(0);
+                    packetCallQueue_Data.RemoveAt(0);
+                }
 
             } finally { mutex.ReleaseMutex(); }
         }
