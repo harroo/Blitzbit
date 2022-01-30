@@ -44,7 +44,7 @@ namespace BlitzBit {
             if (useCallBacks) packetCallQueue.Add(raw);
             else RunPacketCall(raw);
         }
-        private void RunPacketCall (byte[] raw) {
+        private void RunPacketCall (byte[] raw) { try {
 
             int packetId = BitConverter.ToUInt16(raw, 0);
             byte[] data = new byte[raw.Length - 2];
@@ -70,7 +70,8 @@ namespace BlitzBit {
 
                 if (onUnknownPacket != null) onUnknownPacket(packetId, data);
             }
-        }
+
+        } catch {} }
 
         public bool useCallBacks = false;
 
