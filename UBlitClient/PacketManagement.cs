@@ -48,7 +48,7 @@ namespace BlitzBit {
 
             } else RunPacketCall(packetId, data);
         }
-        private void RunPacketCall (int packetId, byte[] data) {
+        private void RunPacketCall (int packetId, byte[] data) { try {
 
             if (packetEvents.ContainsKey(packetId)) {
 
@@ -70,7 +70,8 @@ namespace BlitzBit {
 
                 if (onUnknownPacket != null) onUnknownPacket(packetId, data);
             }
-        }
+
+        } catch {} }
 
         public bool useCallBacks = false;
 
