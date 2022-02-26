@@ -90,7 +90,7 @@ namespace BlitzBit {
                     packetCallQueue_Data.RemoveAt(0);
                 }
 
-            } finally { mutex.ReleaseMutex(); }
+            } catch {} finally { mutex.ReleaseMutex(); }
         }
     }
 }
