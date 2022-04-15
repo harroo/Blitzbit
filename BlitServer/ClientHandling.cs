@@ -86,6 +86,8 @@ namespace BlitzBit {
 
         private void ClientRecvLoop (TcpClient client) {
 
+            string remoteEndPointDetails = client.Client.RemoteEndPoint.ToString();
+
             NetworkStream stream = client.GetStream();
             int hashCode = client.GetHashCode();
 
@@ -130,7 +132,7 @@ namespace BlitzBit {
 
             } catch { break; } }
 
-            Log("Client Disconnected: " + client.Client.RemoteEndPoint.ToString());
+            Log("Client Disconnected: " + remoteEndPointDetails);
 
             mutex.WaitOne(); try {
                 sendStreams.Remove(hashCode);
